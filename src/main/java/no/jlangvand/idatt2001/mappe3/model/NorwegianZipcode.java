@@ -6,7 +6,7 @@ import java.util.List;
 
 public class NorwegianZipcode extends Zipcode {
 
-  private final List<String> labels = List.of(
+  private static final List<String> labels = List.of(
       "ZIP",
       "Area",
       "Municipality Code",
