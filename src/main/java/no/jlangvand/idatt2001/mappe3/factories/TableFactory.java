@@ -20,6 +20,7 @@ public class TableFactory {
   }
 
   public static <T extends Zipcode> TableView<T> getTableView(ObservableList<T> registry) {
+    // Not too happy about this solution. We need to be sure the registry is not empty at this point
     var labels = registry.get(0).getLabels();
     LOGGER.log(INFO, () -> "Creating table for class with labels " + labels);
     var table = new TableView<T>();
@@ -28,7 +29,7 @@ public class TableFactory {
       c.setCellValueFactory(new PropertyValueFactory<>(StringUtils.toPascalCase(label)));
       table.getColumns().add(c);
     });
-
+    table.setItems(registry);
     return table;
   }
 
