@@ -18,6 +18,7 @@ public class App extends Application {
   public void start(Stage primaryStage) {
     var controller = new MainController(new BringZipcodeReader(REGISTRY_URL).readAll());
     var view = new MainView(controller, primaryStage);
+    primaryStage.setWidth(700);
     view.show();
   }
 
