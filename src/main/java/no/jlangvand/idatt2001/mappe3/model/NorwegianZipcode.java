@@ -2,19 +2,23 @@ package no.jlangvand.idatt2001.mappe3.model;
 
 import no.jlangvand.idatt2001.mappe3.utilities.ZipType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NorwegianZipcode extends Zipcode {
 
-  private static final List<String> labels = List.of(
-      "ZIP",
-      "Area",
-      "Municipality Code",
-      "Municipality Name",
-      "Type");
+  private static final List<String> labels;
 
-  private final String zip;
-  private final String area;
+  static {
+    var list = new ArrayList<String>();
+    list.addAll(Zipcode.labels);
+    list.addAll(List.of(
+        "Municipality Name",
+        "Municipality Code",
+        "Type"));
+    labels = list;
+  }
+
   private final String municipalityCode;
   private final String municipalityName;
   private final ZipType type;
@@ -26,14 +30,6 @@ public class NorwegianZipcode extends Zipcode {
     this.municipalityCode = municipalityCode;
     this.municipalityName = municipalityName.toUpperCase();
     this.type = type;
-  }
-
-  public String getZip() {
-    return zip;
-  }
-
-  public String getArea() {
-    return area;
   }
 
   public String getMunicipalityCode() {
