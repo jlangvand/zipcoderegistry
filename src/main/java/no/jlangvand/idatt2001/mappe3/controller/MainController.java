@@ -17,4 +17,8 @@ public class MainController {
     return zipcodes;
   }
 
+  public ObservableList<Zipcode> getZipcodes(CharSequence filter) {
+    return zipcodes.filtered(zipcode -> zipcode.anyParameterContains(filter));
+  }
+
 }

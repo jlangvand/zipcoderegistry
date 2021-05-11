@@ -2,7 +2,9 @@ package no.jlangvand.idatt2001.mappe3.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import no.jlangvand.idatt2001.mappe3.controller.MainController;
 import no.jlangvand.idatt2001.mappe3.factories.TableFactory;
@@ -19,10 +21,18 @@ public class MainView {
     this.stage = stage;
 
     var borderPane = new BorderPane();
-    tableView = TableFactory.getTableView(controller.getZipcodes());
-    tableView.getItems().addAll(controller.getZipcodes());
+    var centerVbox = new VBox();
 
-    borderPane.setCenter(tableView);
+    var searchBox = new TextField();
+    centerVbox.getChildren().add(searchBox);
+
+    tableView = TableFactory.getTableView(controller.getZipcodes());
+    centerVbox.getChildren().add(tableView);
+
+    searchBox.setOnKeyTyped(keyEvent ->
+        tableView.setItems(controller.getZipcodes(searchBox.getCharacters())));
+
+    borderPane.setCenter(centerVbox);
     stage.setScene(new Scene(borderPane));
   }
 
