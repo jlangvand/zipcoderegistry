@@ -1,9 +1,14 @@
 package no.jlangvand.idatt2001.mappe3.zipcodereader;
 
-import no.jlangvand.idatt2001.mappe3.model.NorwegianZipcode;
+import no.jlangvand.idatt2001.mappe3.model.Zipcode;
 
 import java.util.List;
 
+/**
+ * Generic interface describing a class for reading zip codes.
+ */
 public interface ZipcodeReader {
-  List<NorwegianZipcode> readAll() throws ZipCodeReaderException;
+
+  <T extends Zipcode> List<T> readAll() throws ZipCodeReaderException;
+
 }
