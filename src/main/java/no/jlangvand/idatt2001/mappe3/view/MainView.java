@@ -12,12 +12,10 @@ import no.jlangvand.idatt2001.mappe3.model.Zipcode;
 
 public class MainView {
 
-  private final MainController controller;
   private final Stage stage;
   private final TableView<Zipcode> tableView;
 
   public MainView(MainController controller, Stage stage) {
-    this.controller = controller;
     this.stage = stage;
 
     var borderPane = new BorderPane();
