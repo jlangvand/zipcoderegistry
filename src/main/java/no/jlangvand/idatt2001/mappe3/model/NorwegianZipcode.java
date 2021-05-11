@@ -37,8 +37,13 @@ public class NorwegianZipcode extends Zipcode {
    * @param municipalityName name of municipality
    * @param type             type of Zip code (street address, PO box, etc)
    */
-  public NorwegianZipcode(String zipcode, String area, String municipalityCode, String municipalityName,
-                          ZipType type) {
+  public NorwegianZipcode(String zipcode, String area, String municipalityCode,
+                          String municipalityName, ZipType type) {
+    if (!zipcode.matches("\\d{4}")
+        || !municipalityCode.matches("\\d{4}")) {
+      throw new IllegalArgumentException(
+          "Invalid parameters; zip and municipality code must be four digits");
+    }
     this.zip = zipcode;
     this.area = area.toUpperCase();
     this.municipalityCode = municipalityCode;
