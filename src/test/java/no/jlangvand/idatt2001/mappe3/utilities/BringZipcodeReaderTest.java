@@ -1,21 +1,22 @@
 package no.jlangvand.idatt2001.mappe3.utilities;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BringZipcodeReaderTest {
 
+  private static final String REGISTRY_URL = "https://bit.ly/pnrreg";
+
   @Test
   void readFromURL() {
-    assertDoesNotThrow((ThrowingSupplier<BringZipcodeReader>) BringZipcodeReader::new);
+    assertDoesNotThrow(() -> new BringZipcodeReader(REGISTRY_URL));
   }
 
   @Test
   void readAll() {
-    assertTrue((new BringZipcodeReader()).readAll().size() > 1);
+    assertTrue((new BringZipcodeReader(REGISTRY_URL)).readAll().size() > 1);
   }
 
 }
