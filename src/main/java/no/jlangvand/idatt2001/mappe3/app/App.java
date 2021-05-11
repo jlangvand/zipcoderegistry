@@ -6,10 +6,21 @@ import no.jlangvand.idatt2001.mappe3.controller.MainController;
 import no.jlangvand.idatt2001.mappe3.utilities.BringZipcodeReader;
 import no.jlangvand.idatt2001.mappe3.view.MainView;
 
+/**
+ * Main application class.
+ */
 public class App extends Application {
 
+  /**
+   * URL for Bring zip code file.
+   */
   public static final String REGISTRY_URL = "https://bit.ly/pnrreg";
 
+  /**
+   * Main method launches application.
+   *
+   * @param args launch arguments
+   */
   public static void main(String[] args) {
     launch(args);
   }

@@ -13,6 +13,9 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.SEVERE;
 
+/**
+ * Read Norwegian Zipcodes from Bring.
+ */
 public class BringZipcodeReader implements ZipcodeReader {
 
   private static final Logger LOGGER = Logger.getLogger(BringZipcodeReader.class.getName());
@@ -20,6 +23,12 @@ public class BringZipcodeReader implements ZipcodeReader {
 
   private final InputStreamReader inputStreamReader;
 
+  /**
+   * Read Zipcodes from an URL.
+   *
+   * @param fileURL URL for Bring zip code file
+   * @throws ZipCodeReaderException thrown if retrieval or read fails
+   */
   public BringZipcodeReader(String fileURL) throws ZipCodeReaderException {
     try {
       var url = new URL(fileURL);
@@ -31,7 +40,19 @@ public class BringZipcodeReader implements ZipcodeReader {
     }
   }
 
+  private static ZipType getZipType(String type) {
+    return switch (type) {
+      case "B" -> ZipType.ADDRESS_AND_BOX;
+      case "F" -> ZipType.MULTI;
+      case "G" -> ZipType.ADDRESS;
+      case "P" -> ZipType.BOX;
+      case "S" -> ZipType.SERVICE;
+      default -> ZipType.UNKNOWN;
+    };
+  }
+
   @Override
+  @SuppressWarnings("unchecked")
   public ZipcodeRegistry<NorwegianZipcode> readAll() {
     var zipCodes = new ZipcodeRegistry<NorwegianZipcode>();
     try (var bufferedReader = new BufferedReader(inputStreamReader)) {
@@ -47,17 +68,6 @@ public class BringZipcodeReader implements ZipcodeReader {
       throw new ZipCodeReaderException(message);
     }
     return zipCodes;
-  }
-
-  private static ZipType getZipType(String type) {
-    return switch (type) {
-      case "B" -> ZipType.ADDRESS_AND_BOX;
-      case "F" -> ZipType.MULTI;
-      case "G" -> ZipType.ADDRESS;
-      case "P" -> ZipType.BOX;
-      case "S" -> ZipType.SERVICE;
-      default -> ZipType.UNKNOWN;
-    };
   }
 
 }

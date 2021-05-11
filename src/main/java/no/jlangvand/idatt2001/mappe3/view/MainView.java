@@ -10,11 +10,20 @@ import no.jlangvand.idatt2001.mappe3.controller.MainController;
 import no.jlangvand.idatt2001.mappe3.factories.TableFactory;
 import no.jlangvand.idatt2001.mappe3.model.Zipcode;
 
+/**
+ * Class for handling the GUI.
+ */
 public class MainView {
 
   private final Stage stage;
   private final TableView<Zipcode> tableView;
 
+  /**
+   * Construct a new View.
+   *
+   * @param controller application controller
+   * @param stage      stage to draw the GUI upon
+   */
   public MainView(MainController controller, Stage stage) {
     this.stage = stage;
 
@@ -35,10 +44,18 @@ public class MainView {
     stage.setScene(new Scene(borderPane));
   }
 
+  /**
+   * Show the stage.
+   */
   public void show() {
     stage.show();
   }
 
+  /**
+   * Close the stage.
+   *
+   * <p>Effectively closing the application if stage is the primary/only visible stage.
+   */
   public void close() {
     stage.close();
   }

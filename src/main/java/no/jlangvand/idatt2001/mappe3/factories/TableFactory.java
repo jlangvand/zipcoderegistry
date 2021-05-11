@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
 
+/**
+ * Factory class for producing a TableView from an ObservableList.
+ */
 public class TableFactory {
 
   private static final Logger LOGGER = Logger.getLogger(TableFactory.class.getName());
@@ -20,6 +23,13 @@ public class TableFactory {
     // Hide implicit constructor
   }
 
+  /**
+   * Get a TableView for an ObservableList of Zipcodes.
+   *
+   * @param registry list of Zipcodes, must not be empty
+   * @param <T>      type of Zipcode, normally inferred from registry parameter
+   * @return TableView of Zipcodes
+   */
   public static <T extends Zipcode> TableView<T> getTableView(ObservableList<T> registry) {
     // Not too happy about this solution. We need to be sure the registry is not empty at this point
     var labels = registry.get(0).getLabels();

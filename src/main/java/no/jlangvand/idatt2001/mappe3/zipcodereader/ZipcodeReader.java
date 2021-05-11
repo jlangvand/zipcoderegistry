@@ -9,6 +9,13 @@ import java.util.List;
  */
 public interface ZipcodeReader {
 
+  /**
+   * Read all zip codes from the reader's source.
+   *
+   * @param <T> type of Zipcode
+   * @return list of zipcodes
+   * @throws ZipCodeReaderException if operation fails
+   */
   <T extends Zipcode> List<T> readAll() throws ZipCodeReaderException;
 
 }

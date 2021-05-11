@@ -5,10 +5,14 @@ import no.jlangvand.idatt2001.mappe3.utilities.ZipType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Norwegian Zipcode.
+ */
 public class NorwegianZipcode extends Zipcode {
 
   private static final List<String> labels;
 
+  // Static initialiser to add our fields to the parent class' list
   static {
     var list = new ArrayList<String>();
     list.addAll(Zipcode.labels);
@@ -23,6 +27,16 @@ public class NorwegianZipcode extends Zipcode {
   private final String municipalityName;
   private final ZipType type;
 
+  /**
+   * Create a new Zipcode.
+   *
+   * @param zipcode          four digit Zip code
+   * @param area             name of area the code belongs to
+   * @param municipalityCode four digit municipality code, county name can be derived from this
+   *                         code
+   * @param municipalityName name of municipality
+   * @param type             type of Zip code (street address, PO box, etc)
+   */
   public NorwegianZipcode(String zipcode, String area, String municipalityCode, String municipalityName,
                           ZipType type) {
     this.zip = zipcode;
@@ -32,14 +46,29 @@ public class NorwegianZipcode extends Zipcode {
     this.type = type;
   }
 
+  /**
+   * Get municipality code.
+   *
+   * @return municipality code
+   */
   public String getMunicipalityCode() {
     return municipalityCode;
   }
 
+  /**
+   * Get municipality name.
+   *
+   * @return municipality name
+   */
   public String getMunicipalityName() {
     return municipalityName;
   }
 
+  /**
+   * Get zip type.
+   *
+   * @return zip type
+   */
   public String getType() {
     return type.toString();
   }

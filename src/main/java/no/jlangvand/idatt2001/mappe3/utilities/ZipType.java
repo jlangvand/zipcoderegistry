@@ -1,5 +1,8 @@
 package no.jlangvand.idatt2001.mappe3.utilities;
 
+/**
+ * Types of zip codes.
+ */
 public enum ZipType {
   ADDRESS("Street Address"),
   BOX("PO Box"),
