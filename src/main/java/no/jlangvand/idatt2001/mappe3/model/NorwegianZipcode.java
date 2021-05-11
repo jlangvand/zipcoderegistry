@@ -22,9 +22,9 @@ public class NorwegianZipcode extends Zipcode {
   public NorwegianZipcode(String zipcode, String area, String municipalityCode, String municipalityName,
                           ZipType type) {
     this.zip = zipcode;
-    this.area = area;
+    this.area = area.toUpperCase();
     this.municipalityCode = municipalityCode;
-    this.municipalityName = municipalityName;
+    this.municipalityName = municipalityName.toUpperCase();
     this.type = type;
   }
 
@@ -50,6 +50,7 @@ public class NorwegianZipcode extends Zipcode {
 
   @Override
   public boolean anyParameterContains(CharSequence s) {
+    s = s.toString().toUpperCase();
     return getZip().contains(s)
         || getArea().contains(s)
         || getMunicipalityCode().contains(s)
