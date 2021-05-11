@@ -29,6 +29,7 @@ public class MainView {
     tableView = TableFactory.getTableView(controller.getZipcodes());
     centerVbox.getChildren().add(tableView);
 
+    searchBox.setPromptText("Filter by any parameter(s)");
     searchBox.setOnKeyTyped(keyEvent ->
         tableView.setItems(controller.getZipcodes(searchBox.getCharacters())));
 

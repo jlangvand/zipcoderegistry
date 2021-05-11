@@ -46,11 +46,15 @@ public class NorwegianZipcode extends Zipcode {
 
   @Override
   public boolean anyParameterContains(CharSequence s) {
-    s = s.toString().toUpperCase();
-    return getZip().contains(s)
-        || getArea().contains(s)
-        || getMunicipalityCode().contains(s)
-        || getMunicipalityName().contains(s);
+    for (var str : s.toString().strip().toUpperCase().split("[^\\wÆØÅ]")) {
+      if (!(getZip().contains(str)
+          || getArea().contains(str)
+          || getMunicipalityCode().contains(str)
+          || getMunicipalityName().contains(str))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
