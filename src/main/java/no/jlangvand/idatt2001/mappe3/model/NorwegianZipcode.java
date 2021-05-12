@@ -1,7 +1,5 @@
 package no.jlangvand.idatt2001.mappe3.model;
 
-import no.jlangvand.idatt2001.mappe3.utilities.ZipType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class NorwegianZipcode extends Zipcode {
 
   private final String municipalityCode;
   private final String municipalityName;
-  private final ZipType type;
+  private final String type;
 
   /**
    * Create a new Zipcode.
@@ -38,7 +36,7 @@ public class NorwegianZipcode extends Zipcode {
    * @param type             type of Zip code (street address, PO box, etc)
    */
   public NorwegianZipcode(String zipcode, String area, String municipalityCode,
-                          String municipalityName, ZipType type) {
+                          String municipalityName, String type) {
     if (!zipcode.matches("\\d{4}")
         || !municipalityCode.matches("\\d{4}")) {
       throw new IllegalArgumentException(
@@ -75,7 +73,7 @@ public class NorwegianZipcode extends Zipcode {
    * @return zip type
    */
   public String getType() {
-    return type.toString();
+    return type;
   }
 
   @Override

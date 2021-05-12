@@ -68,14 +68,14 @@ public class BringZipcodeReader implements ZipcodeReader {
     }
   }
 
-  private static ZipType getZipType(String type) {
+  private static String getZipType(String type) {
     return switch (type) {
-      case "B" -> ZipType.ADDRESS_AND_BOX;
-      case "F" -> ZipType.MULTI;
-      case "G" -> ZipType.ADDRESS;
-      case "P" -> ZipType.BOX;
-      case "S" -> ZipType.SERVICE;
-      default -> ZipType.UNKNOWN;
+      case "B" -> "Street addr. and PO box";
+      case "F" -> "Multiple uses";
+      case "G" -> "Street addr.";
+      case "P" -> "PO box";
+      case "S" -> "Service (not postal address)";
+      default -> "Unknown";
     };
   }
 
