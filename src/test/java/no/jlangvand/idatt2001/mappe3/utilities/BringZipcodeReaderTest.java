@@ -1,5 +1,6 @@
 package no.jlangvand.idatt2001.mappe3.utilities;
 
+import no.jlangvand.idatt2001.mappe3.zipcodereader.BringZipcodeReader;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

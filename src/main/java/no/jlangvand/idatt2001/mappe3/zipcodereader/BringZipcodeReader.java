@@ -1,9 +1,7 @@
-package no.jlangvand.idatt2001.mappe3.utilities;
+package no.jlangvand.idatt2001.mappe3.zipcodereader;
 
 import no.jlangvand.idatt2001.mappe3.app.App;
 import no.jlangvand.idatt2001.mappe3.model.NorwegianZipcode;
-import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
-import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipcodeReader;
 
 import java.io.BufferedReader;
 import java.io.File;

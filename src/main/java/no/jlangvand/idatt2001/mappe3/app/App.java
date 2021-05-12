@@ -6,7 +6,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import no.jlangvand.idatt2001.mappe3.controller.MainController;
-import no.jlangvand.idatt2001.mappe3.utilities.BringZipcodeReader;
+import no.jlangvand.idatt2001.mappe3.zipcodereader.BringZipcodeReader;
 import no.jlangvand.idatt2001.mappe3.view.MainView;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
 
