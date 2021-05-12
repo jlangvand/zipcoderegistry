@@ -1,13 +1,17 @@
 package no.jlangvand.idatt2001.mappe3.utilities;
 
+import no.jlangvand.idatt2001.mappe3.app.App;
 import no.jlangvand.idatt2001.mappe3.model.NorwegianZipcode;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipcodeReader;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -20,9 +24,8 @@ import static java.util.logging.Level.SEVERE;
 public class BringZipcodeReader implements ZipcodeReader {
 
   private static final Logger LOGGER = Logger.getLogger(BringZipcodeReader.class.getName());
-  private static final String RETRIEVE_FAILED_MSG = "Failed to retrieve registry file";
 
-  private final InputStreamReader inputStreamReader;
+  private final InputStreamReader reader;
 
   /**
    * Read Zipcodes from an URL.
@@ -33,9 +36,33 @@ public class BringZipcodeReader implements ZipcodeReader {
   public BringZipcodeReader(String fileURL) throws ZipCodeReaderException {
     try {
       var url = new URL(fileURL);
-      inputStreamReader = new InputStreamReader(url.openStream());
+      reader = new InputStreamReader(url.openStream(), StandardCharsets.ISO_8859_1);
     } catch (IOException e) {
-      var message = RETRIEVE_FAILED_MSG;
+      var message = """
+          Failed to download file from URL.
+                    
+          Registry file can be downloaded manually from %s
+          """.formatted(App.REGISTRY_INFO_URL);
+      LOGGER.log(SEVERE, message);
+      throw new ZipCodeReaderException(message);
+    }
+  }
+
+  /**
+   * Read Zipcodes from a local file.
+   *
+   * @param file Bring zip code file
+   * @throws ZipCodeReaderException thrown if retrieval or read fails
+   */
+  public BringZipcodeReader(File file) throws ZipCodeReaderException {
+    try {
+      reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.ISO_8859_1);
+    } catch (IOException e) {
+      var message = """
+          Failed to read file, make sure the file is of the right type.
+                
+          Registry file can be downloaded from %s
+          """.formatted(App.REGISTRY_INFO_URL);
       LOGGER.log(SEVERE, message);
       throw new ZipCodeReaderException(message);
     }
@@ -56,7 +83,7 @@ public class BringZipcodeReader implements ZipcodeReader {
   @SuppressWarnings("unchecked")
   public List<NorwegianZipcode> readAll() {
     var zipCodes = new ArrayList<NorwegianZipcode>();
-    try (var bufferedReader = new BufferedReader(inputStreamReader)) {
+    try (var bufferedReader = new BufferedReader(reader)) {
       for (var line = ""; (line = bufferedReader.readLine()) != null; ) {
         var row = line.split("\t");
         if (row.length != 5)
