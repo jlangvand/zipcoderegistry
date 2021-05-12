@@ -47,7 +47,6 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    primaryStage.setWidth(700);
     var downloadButton = new ButtonType("Download");
     var openFileButton = new ButtonType("Choose File");
     var dialog = new Alert(CONFIRMATION,

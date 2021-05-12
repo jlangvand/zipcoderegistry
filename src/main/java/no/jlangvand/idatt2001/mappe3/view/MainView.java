@@ -34,6 +34,7 @@ public class MainView {
 
     var tableView = TableFactory.getTableView(controller.getObservableZipcodes());
     centerVbox.getChildren().add(tableView);
+    stage.setWidth(tableView.getLayoutBounds().getWidth());
 
     borderPane.setCenter(centerVbox);
     stage.setScene(new Scene(borderPane));
