@@ -23,8 +23,9 @@ public class MainController<T extends Zipcode> {
    * @param zipcodes Zipcodes to display
    */
   public MainController(List<T> zipcodes) {
-    this.zipcodes = zipcodes;
-    this.observableZipcodes = FXCollections.observableArrayList(zipcodes);
+    // Using an unmodifiable list for space efficiency and to prevent accidental modifications.
+    this.zipcodes = List.copyOf(zipcodes);
+    this.observableZipcodes = FXCollections.observableArrayList(this.zipcodes);
   }
 
   /**
