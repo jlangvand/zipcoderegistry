@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import no.jlangvand.idatt2001.mappe3.controller.MainController;
 import no.jlangvand.idatt2001.mappe3.factories.TableFactory;
+import no.jlangvand.idatt2001.mappe3.model.Zipcode;
 
 /**
  * Class for handling the GUI.
@@ -21,7 +22,7 @@ public class MainView {
    * @param controller application controller
    * @param stage      stage to draw the GUI upon
    */
-  public MainView(MainController controller, Stage stage) {
+  public <T extends Zipcode> MainView(MainController<T> controller, Stage stage) {
     this.stage = stage;
 
     var borderPane = new BorderPane();
