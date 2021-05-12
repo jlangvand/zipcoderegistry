@@ -7,9 +7,22 @@ import java.util.List;
  */
 public abstract class Zipcode {
 
+  /**
+   * List of fields that should be read by the frontend.
+   *
+   * <p>Classes extending this class must append labels for fields they declare. Labels should be
+   * in human readable format, and must match the declared field names.
+   */
   protected static final List<String> labels = List.of("ZIP", "Area");
 
+  /**
+   * Zip/postal code.
+   */
   protected String zip;
+
+  /**
+   * Name of area the zip code represents.
+   */
   protected String area;
 
   /**
