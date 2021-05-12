@@ -1,7 +1,6 @@
 package no.jlangvand.idatt2001.mappe3.utilities;
 
 import no.jlangvand.idatt2001.mappe3.model.NorwegianZipcode;
-import no.jlangvand.idatt2001.mappe3.model.ZipcodeRegistry;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipcodeReader;
 
@@ -9,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.SEVERE;
@@ -53,8 +54,8 @@ public class BringZipcodeReader implements ZipcodeReader {
 
   @Override
   @SuppressWarnings("unchecked")
-  public ZipcodeRegistry<NorwegianZipcode> readAll() {
-    var zipCodes = new ZipcodeRegistry<NorwegianZipcode>();
+  public List<NorwegianZipcode> readAll() {
+    var zipCodes = new ArrayList<NorwegianZipcode>();
     try (var bufferedReader = new BufferedReader(inputStreamReader)) {
       for (var line = ""; (line = bufferedReader.readLine()) != null; ) {
         var row = line.split("\t");

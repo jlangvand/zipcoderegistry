@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import no.jlangvand.idatt2001.mappe3.model.Zipcode;
-import no.jlangvand.idatt2001.mappe3.model.ZipcodeRegistry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,19 +12,18 @@ import java.util.stream.Collectors;
 /**
  * Application controller.
  */
-public class MainController {
+public class MainController<T extends Zipcode> {
 
-  private final List<Zipcode> zipcodes;
+  private final List<T> zipcodes;
   private final ObservableList<Zipcode> observableZipcodes;
 
   /**
    * Create a controller given a Zipcode registry.
    *
    * @param zipcodes Zipcodes to display
-   * @param <T>      type of zipcodes, normally inferred from zipcodes parameter
    */
-  public <T extends Zipcode> MainController(ZipcodeRegistry<T> zipcodes) {
-    this.zipcodes = FXCollections.observableArrayList(zipcodes);
+  public MainController(List<T> zipcodes) {
+    this.zipcodes = zipcodes;
     this.observableZipcodes = FXCollections.observableArrayList(zipcodes);
   }
 
