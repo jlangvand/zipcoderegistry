@@ -1,25 +1,9 @@
 package no.jlangvand.idatt2001.mappe3.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Norwegian Zipcode.
  */
 public class NorwegianZipcode extends Zipcode {
-
-  private static final List<String> labels;
-
-  // Static initialiser to add our fields to the parent class' list
-  static {
-    var list = new ArrayList<String>();
-    list.addAll(Zipcode.labels);
-    list.addAll(List.of(
-        "Municipality Name",
-        "Municipality Code",
-        "Type"));
-    labels = list;
-  }
 
   private final String municipalityCode;
   private final String municipalityName;
@@ -87,11 +71,6 @@ public class NorwegianZipcode extends Zipcode {
       }
     }
     return true;
-  }
-
-  @Override
-  public List<String> getLabels() {
-    return labels;
   }
 
 }
