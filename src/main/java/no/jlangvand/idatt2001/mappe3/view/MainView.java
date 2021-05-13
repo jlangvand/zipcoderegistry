@@ -49,13 +49,4 @@ public class MainView {
     stage.show();
   }
 
-  /**
-   * Close the stage.
-   *
-   * <p>Effectively closing the application if stage is the primary/only visible stage.
-   */
-  public void close() {
-    stage.close();
-  }
-
 }
