@@ -6,8 +6,8 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import no.jlangvand.idatt2001.mappe3.controller.MainController;
-import no.jlangvand.idatt2001.mappe3.zipcodereader.BringZipcodeReader;
 import no.jlangvand.idatt2001.mappe3.view.MainView;
+import no.jlangvand.idatt2001.mappe3.zipcodereader.BringZipcodeReader;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
 
 import java.io.File;
@@ -74,12 +74,12 @@ public class App extends Application {
   }
 
   private static void showApplication(Stage stage, String path) {
-    var controller = new MainController<>(new BringZipcodeReader(path).readAll());
+    var controller = new MainController(new BringZipcodeReader(path).readAll());
     (new MainView(controller, stage)).show();
   }
 
   private static void showApplication(Stage stage, File file) {
-    var controller = new MainController<>(new BringZipcodeReader(file).readAll());
+    var controller = new MainController(new BringZipcodeReader(file).readAll());
     (new MainView(controller, stage)).show();
   }
 

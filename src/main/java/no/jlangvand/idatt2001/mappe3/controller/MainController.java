@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 /**
  * Application controller.
  */
-public class MainController<T extends Zipcode> {
+public class MainController {
 
-  private final List<T> zipcodes;
+  private final List<Zipcode> zipcodes;
   private final ObservableList<Zipcode> observableZipcodes;
 
   /**
@@ -22,7 +22,7 @@ public class MainController<T extends Zipcode> {
    *
    * @param zipcodes Zipcodes to display
    */
-  public MainController(List<T> zipcodes) {
+  public MainController(List<Zipcode> zipcodes) {
     // Using an unmodifiable list for space efficiency and to prevent accidental modifications.
     this.zipcodes = List.copyOf(zipcodes);
     this.observableZipcodes = FXCollections.observableArrayList(this.zipcodes);

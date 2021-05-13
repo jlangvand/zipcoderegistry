@@ -2,6 +2,7 @@ package no.jlangvand.idatt2001.mappe3.zipcodereader;
 
 import no.jlangvand.idatt2001.mappe3.app.App;
 import no.jlangvand.idatt2001.mappe3.model.NorwegianZipcode;
+import no.jlangvand.idatt2001.mappe3.model.Zipcode;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -79,8 +80,8 @@ public class BringZipcodeReader implements ZipcodeReader {
 
   @Override
   @SuppressWarnings("unchecked")
-  public List<NorwegianZipcode> readAll() {
-    var zipCodes = new ArrayList<NorwegianZipcode>();
+  public List<Zipcode> readAll() {
+    var zipCodes = new ArrayList<Zipcode>();
     try (var bufferedReader = new BufferedReader(reader)) {
       for (var line = ""; (line = bufferedReader.readLine()) != null; ) {
         var row = line.split("\t");
