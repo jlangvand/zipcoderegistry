@@ -1,6 +1,7 @@
 package no.jlangvand.idatt2001.mappe3.view;
 
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumnBase;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -34,7 +35,8 @@ public class MainView {
 
     var tableView = TableFactory.getTableView(controller.getObservableZipcodes());
     centerVbox.getChildren().add(tableView);
-    stage.setWidth(tableView.getLayoutBounds().getWidth());
+
+    stage.setWidth(tableView.getColumns().stream().mapToDouble(TableColumnBase::getPrefWidth).sum() + 30);
 
     borderPane.setCenter(centerVbox);
     stage.setScene(new Scene(borderPane));
