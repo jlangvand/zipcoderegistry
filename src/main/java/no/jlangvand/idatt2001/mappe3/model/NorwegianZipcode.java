@@ -1,13 +1,29 @@
 package no.jlangvand.idatt2001.mappe3.model;
 
+import no.jlangvand.idatt2001.mappe3.annotations.TableProperty;
+
 /**
  * Norwegian Zipcode.
  */
 public class NorwegianZipcode extends Zipcode {
 
-  private final String municipalityCode;
-  private final String municipalityName;
-  private final String type;
+  /**
+   * Denotes county and municipality.
+   */
+  @TableProperty(label = "Municipality Code", order = 11)
+  public final String municipalityCode;
+
+  /**
+   * Name of municipality.
+   */
+  @TableProperty(label = "Municipality Name", order = 10)
+  public final String municipalityName;
+
+  /**
+   * Type of Zip code.
+   */
+  @TableProperty(label = "ZIP Type", order = 12)
+  public final String type;
 
   /**
    * Create a new Zipcode.
