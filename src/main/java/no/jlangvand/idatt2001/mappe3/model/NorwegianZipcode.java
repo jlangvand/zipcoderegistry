@@ -3,7 +3,14 @@ package no.jlangvand.idatt2001.mappe3.model;
 import no.jlangvand.idatt2001.mappe3.annotations.TableProperty;
 
 /**
- * Norwegian Zipcode.
+ * Norwegian Zipcode implementation.
+ *
+ * <p>Annotated with {@link TableProperty} so this class can be used with
+ * {@link no.jlangvand.idatt2001.mappe3.factories.TableFactory}.
+ *
+ * @see Zipcode
+ * @see no.jlangvand.idatt2001.mappe3.factories.TableFactory
+ * @see TableProperty
  */
 public class NorwegianZipcode extends Zipcode {
 
