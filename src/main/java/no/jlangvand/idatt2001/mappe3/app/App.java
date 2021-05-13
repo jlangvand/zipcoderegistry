@@ -10,7 +10,8 @@ import no.jlangvand.idatt2001.mappe3.view.MainView;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.BringZipcodeReader;
 import no.jlangvand.idatt2001.mappe3.zipcodereader.ZipCodeReaderException;
 
-import java.io.File;
+import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.SEVERE;
@@ -23,6 +24,9 @@ import static javafx.scene.control.Alert.AlertType.ERROR;
 public class App extends Application {
 
   private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+  private static final ButtonType BUTTON_DOWNLOAD = new ButtonType("Download");
+  private static final ButtonType BUTTON_OPEN_FILE = new ButtonType("Choose File");
+  private static final String APP_TTILE = "Zip Code Registry";
 
   /**
    * URL for Bring zip code file.
@@ -45,47 +49,38 @@ public class App extends Application {
     launch(args);
   }
 
-  @Override
-  public void start(Stage primaryStage) {
-    var downloadButton = new ButtonType("Download");
-    var openFileButton = new ButtonType("Choose File");
-    var dialog = new Alert(CONFIRMATION,
-        "Automatically download zip code file from internet?",
-        downloadButton, openFileButton, ButtonType.CLOSE);
-    ButtonType selected;
-    while ((selected = dialog.showAndWait().orElse(ButtonType.CLOSE)) != ButtonType.CLOSE) {
-      try {
-        if (selected == downloadButton || selected == openFileButton) {
-          if (selected == downloadButton)
-            showApplication(primaryStage, REGISTRY_URL);
-          else
-            showApplication(primaryStage, (new FileChooser().showOpenDialog(primaryStage)));
-          break;
-        }
-      } catch (ZipCodeReaderException e) {
-        exceptionHandler(e.getMessage());
-      } catch (NullPointerException ignore) {
-        /*
-         Exception thrown when file chooser dialog is closed without choosing a file, and can be
-         safely ignored.
-        */
-      }
+  private static boolean handleResponse(Stage stage, ButtonType bt) {
+    MainController controller = null;
+    try {
+      if (bt == BUTTON_DOWNLOAD) controller = new MainController(
+          new BringZipcodeReader(App.REGISTRY_URL).readAll());
+      else if (bt == BUTTON_OPEN_FILE) controller = new MainController(
+          new BringZipcodeReader((new FileChooser().showOpenDialog(stage))).readAll());
+      if (Objects.nonNull(controller)) (new MainView(controller, stage)).show();
+    } catch (NullPointerException ignore) {
+      // No file selected from file chooser, just ignore this and show the dialog again
+      return false;
+    } catch (ZipCodeReaderException e) {
+      exceptionHandler("Failed to open file: %s".formatted(e.getMessage()));
     }
+    return true;
   }
 
-  private static void showApplication(Stage stage, String path) {
-    var controller = new MainController(new BringZipcodeReader(path).readAll());
-    (new MainView(controller, stage)).show();
-  }
-
-  private static void showApplication(Stage stage, File file) {
-    var controller = new MainController(new BringZipcodeReader(file).readAll());
-    (new MainView(controller, stage)).show();
-  }
-
-  private void exceptionHandler(String message, ButtonType... buttons) {
+  private static void exceptionHandler(String message, ButtonType... buttons) {
     LOGGER.log(SEVERE, () -> "Exception handler: %s".formatted(message));
     (new Alert(ERROR, message, buttons)).showAndWait();
+  }
+
+  @Override
+  public void start(Stage primaryStage) {
+    primaryStage.setTitle(APP_TTILE);
+    var dialog = new Alert(CONFIRMATION,
+        "Automatically download latest Zip code file from Bring?",
+        BUTTON_DOWNLOAD, BUTTON_OPEN_FILE, ButtonType.CLOSE);
+    dialog.setTitle(APP_TTILE);
+    dialog.setHeaderText("Download File?");
+    Supplier<ButtonType> loadDialog = () -> dialog.showAndWait().orElse(ButtonType.CLOSE);
+    while (!handleResponse(primaryStage, loadDialog.get())) ;
   }
 
 }
