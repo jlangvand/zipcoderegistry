@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * Factory class for producing a TableView from an ObservableList.
@@ -30,12 +31,12 @@ public class TableFactory {
   /**
    * Get a TableView for an ObservableList.
    *
-   * <p>Columns will be created for fields annotated with
-   * TableProperty. Note that the list must not be empty.
+   * <p>Columns will be created for fields annotated with TableProperty. Note that the list must
+   * not be empty.
    *
    * @param list observable list containing objects annotated with TableProperty. This list must
    *             contain one or more elements.
-   * @param <T>  type parameter of the list parameter, normally inferred
+   * @param <T>  type parameter of the list, normally inferred
    * @return TableView with generated rows and columns from the ObservableList
    * @throws NullPointerException if called with an empty list
    * @see TableProperty
@@ -51,35 +52,43 @@ public class TableFactory {
     var columns = new ArrayList<TableColumn<T, String>>();
     Arrays.stream(list.get(0).getClass().getFields())
         .filter(f -> f.isAnnotationPresent(TableProperty.class))
-        .sorted(Comparator.comparingInt(f -> f.getAnnotation(TableProperty.class).order()))
-        .forEach(field -> {
-          var label = field.getAnnotation(TableProperty.class).label();
-          var column = new TableColumn<T, String>(label);
-          column.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
-          column.setPrefWidth(Math.max(calculateWidth(list, field), calculateWidth(label)));
-          columns.add(column);
-        });
+        .sorted(Comparator.comparingInt(TableFactory::getAnnotatedOrder))
+        .forEachOrdered(field -> columns.add(createColumnFromField(field, list)));
     return columns;
   }
 
-  private static <T> double calculateWidth(List<T> list, Field field) {
-    // Let's just declare this as an array so we can mutate it from a lambda expression. Using 60
-    // as minimum width.
-    final var max = new double[]{60.0};
-    list.forEach(o -> {
-      try {
-        max[0] = Math.max(max[0], calculateWidth((String) field.get(o)));
-      } catch (Exception ignored) {
-        // This method is not critical, so we'll log the exception but otherwise ignore it
-        LOGGER.log(INFO, () -> "Failed to invoke method %s".formatted(field.getName()));
-      }
-    });
-    return max[0];
+  private static <T> TableColumn<T, String> createColumnFromField(Field field, List<T> list) {
+    var label = field.getAnnotation(TableProperty.class).label();
+    var column = new TableColumn<T, String>(label);
+    column.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
+    column.setPrefWidth(Math.max(calculateWidth(list, field), calculateWidth(label)));
+    return column;
   }
 
-  // Not very elegant, but TableProperty lacks a (public) auto resize method
+  /*
+  This might not be very elegant, but TableView lacks the ability to automatically adjust column
+  width to fit the content.
+   */
+  private static <T> double calculateWidth(List<T> list, Field field) {
+    ToDoubleFunction<T> getWidthOfStringField = t -> {
+      try {
+        return calculateWidth((String) field.get(t));
+      } catch (IllegalAccessException ignored) {
+        // This exception is not critical, so we just log and otherwise ignore it
+        LOGGER.log(WARNING, () ->
+            "Failed to read field %s from element %s".formatted(field.getName(), t.toString()));
+        return 0.0;
+      }
+    };
+    return list.stream().mapToDouble(getWidthOfStringField).max().orElse(100);
+  }
+
   private static double calculateWidth(String s) {
-    return Math.max((new Text(s)).getLayoutBounds().getWidth() + 30, 60);
+    return (new Text(s)).getLayoutBounds().getWidth() + 30;
+  }
+
+  private static int getAnnotatedOrder(Field f) {
+    return f.getAnnotation(TableProperty.class).order();
   }
 
 }
