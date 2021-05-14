@@ -20,53 +20,43 @@ package no.jlangvand.idatt2001.mappe3.model;
 
 import no.jlangvand.idatt2001.mappe3.annotations.TableProperty;
 
-/**
- * Generic Zipcode, to be extended for local formats.
- */
-public abstract class Zipcode {
+public class UKZipcode extends Zipcode {
 
   /**
-   * Zip/postal code.
+   * Two letter code denoting state.
    */
-  @TableProperty(label = "Zip Code", order = 0)
-  public String zip;
+  @TableProperty(label = "Town", order = 10)
+  public final String county;
 
-  /**
-   * Name of area the zip code represents.
-   */
-  @TableProperty(label = "Area Name", order = 1)
-  public String area;
+  public UKZipcode(String zip, String area, String county) {
+    if (!zip.matches("\\w{3} ?\\w{3}"))
+      throw new IllegalArgumentException("Zip code must be six characters");
+    this.zip = zip;
+    this.area = area.toUpperCase();
+    this.county = county.toUpperCase();
+  }
 
-  /**
-   * Check if code contains given characters.
-   *
-   * <p>One can search for multiple fields at once, separated by any non-word character.
-   *
-   * @param s sequence to search for
-   * @return true if Zipcode matches all terms
-   */
-  public abstract boolean anyParameterContains(CharSequence s);
+  public String getCounty() {
+    return county;
+  }
 
+  @Override
   public String getAsString() {
-    return "%s %s".formatted(getZip(), getArea());
+    return "%s%n%s%n%s".formatted(getArea(), getCounty(), getZip());
   }
 
   /**
-   * Get zip code.
-   *
-   * @return zip code
+   * {@inheritDoc}
    */
-  public String getZip() {
-    return zip;
-  }
-
-  /**
-   * Get area name.
-   *
-   * @return area name
-   */
-  public String getArea() {
-    return area;
+  @Override
+  public boolean anyParameterContains(CharSequence s) {
+    for (var str : s.toString().strip().toUpperCase().split("[^\\w]")) {
+      if (!(getZip().startsWith(str)
+          || getArea().startsWith(str)
+          || getCounty().startsWith(str)))
+        return false;
+    }
+    return true;
   }
 
 }
