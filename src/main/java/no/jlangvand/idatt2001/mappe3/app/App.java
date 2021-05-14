@@ -77,7 +77,8 @@ public class App extends Application {
       // No file selected from file chooser, just ignore this and show the dialog again
       return false;
     } catch (ZipCodeReaderException e) {
-      exceptionHandler("Failed to open file: %s".formatted(e.getMessage()));
+      exceptionHandler(e.getMessage());
+      return false;
     }
     return true;
   }

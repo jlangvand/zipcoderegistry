@@ -41,6 +41,11 @@ import static java.util.logging.Level.SEVERE;
 public class BringZipcodeReader implements ZipcodeReader {
 
   private static final Logger LOGGER = Logger.getLogger(BringZipcodeReader.class.getName());
+  private static final String INVALID_FILE_MESSAGE = """
+      Failed to read file, make sure the file is of the right type.
+            
+      Registry file can be downloaded from %s
+      """.formatted(App.REGISTRY_INFO_URL);
 
   private final InputStreamReader reader;
 
@@ -55,11 +60,7 @@ public class BringZipcodeReader implements ZipcodeReader {
       var url = new URL(fileURL);
       reader = new InputStreamReader(url.openStream(), StandardCharsets.ISO_8859_1);
     } catch (IOException e) {
-      var message = """
-          Failed to download file from URL.
-                    
-          Registry file can be downloaded manually from %s
-          """.formatted(App.REGISTRY_INFO_URL);
+      var message = "Failed to download file";
       LOGGER.log(SEVERE, message);
       throw new ZipCodeReaderException(message);
     }
@@ -75,13 +76,8 @@ public class BringZipcodeReader implements ZipcodeReader {
     try {
       reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.ISO_8859_1);
     } catch (IOException e) {
-      var message = """
-          Failed to read file, make sure the file is of the right type.
-                
-          Registry file can be downloaded from %s
-          """.formatted(App.REGISTRY_INFO_URL);
-      LOGGER.log(SEVERE, message);
-      throw new ZipCodeReaderException(message);
+      LOGGER.log(SEVERE, INVALID_FILE_MESSAGE);
+      throw new ZipCodeReaderException(INVALID_FILE_MESSAGE);
     }
   }
 
@@ -104,7 +100,7 @@ public class BringZipcodeReader implements ZipcodeReader {
       for (var line = ""; (line = bufferedReader.readLine()) != null; ) {
         var row = line.split("\t");
         if (row.length != 5)
-          throw new ZipCodeReaderException("Invalid file (wrong number of fields)");
+          throw new ZipCodeReaderException(INVALID_FILE_MESSAGE);
         zipCodes.add(new NorwegianZipcode(row[0], row[1], row[2], row[3], getZipType(row[4])));
       }
     } catch (IOException e) {
