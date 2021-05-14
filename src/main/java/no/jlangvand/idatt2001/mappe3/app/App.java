@@ -23,22 +23,20 @@ import static javafx.scene.control.Alert.AlertType.ERROR;
  */
 public class App extends Application {
 
-  private static final Logger LOGGER = Logger.getLogger(App.class.getName());
-  private static final ButtonType BUTTON_DOWNLOAD = new ButtonType("Download");
-  private static final ButtonType BUTTON_OPEN_FILE = new ButtonType("Choose File");
-  private static final String APP_TTILE = "Zip Code Registry";
-
   /**
    * URL for Bring zip code file.
    */
   public static final String REGISTRY_URL =
       "https://www.bring.no/postnummerregister-ansi.txt";
-
   /**
    * URL for info and manual download of registry file.
    */
   public static final String REGISTRY_INFO_URL =
       "https://www.bring.no/tjenester/adressetjenester/postnummer/";
+  private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+  private static final ButtonType BUTTON_DOWNLOAD = new ButtonType("Download");
+  private static final ButtonType BUTTON_OPEN_FILE = new ButtonType("Choose File");
+  private static final String APP_TITLE = "Zip Code Registry";
 
   /**
    * Main method launches application.
@@ -73,11 +71,11 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    primaryStage.setTitle(APP_TTILE);
+    primaryStage.setTitle(APP_TITLE);
     var dialog = new Alert(CONFIRMATION,
         "Automatically download latest Zip code file from Bring?",
         BUTTON_DOWNLOAD, BUTTON_OPEN_FILE, ButtonType.CLOSE);
-    dialog.setTitle(APP_TTILE);
+    dialog.setTitle(APP_TITLE);
     dialog.setHeaderText("Download File?");
     Supplier<ButtonType> loadDialog = () -> dialog.showAndWait().orElse(ButtonType.CLOSE);
     while (!handleResponse(primaryStage, loadDialog.get())) ;
